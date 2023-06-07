@@ -2,17 +2,30 @@
 
 namespace Core;
 
-class ConfigController
+/**
+ * Recebe a URL e manipula
+ * Carregar a Controller
+ */
+
+class ConfigController extends Config
 {
+    /** @var string $url Recebe a URL do .htaccess */
     private string $url;
+     /** @var string $urlArray Recebe a URL convertida para array */
     private array $urlArray;
     private string $urlController;
     //private string $urlParameter;
     private string $urlSlugController;
     private array $format;
 
+    /**
+     * Recebe a URL do .htaccess
+     * Validar a URL
+     */
+
     public function __construct()
     {
+        $this->config();
         if(!empty(filter_input(INPUT_GET, 'url', FILTER_DEFAULT))){
             $this->url = filter_input(INPUT_GET, 'url', FILTER_DEFAULT);
             
@@ -22,15 +35,24 @@ class ConfigController
             if(isset($this->urlArray[0])){
                 $this->urlController = $this->slugController($this->urlArray[0]);
             }else{
-                $this->urlController =  $this->slugController("Home");
+                $this->urlController =  $this->slugController(CONTROLLERERRO);
             }
 
         }else{
-            $this->urlController = $this->slugController("Home");
+            $this->urlController = $this->slugController(CONTROLLER);
         }
         
         echo "Controller: {$this->urlController} <br>";
+
     }
+
+     /**
+     * Método privado não pode ser instanciado fora da classe
+     * Limpara a URL, elimando as TAG, os espaços em brancos, retirar a barra no final da 
+     * URL e retirar os caracteres especiais
+     *
+     * @return void
+     */
 
     private function clearUrl()
     {
@@ -49,6 +71,18 @@ class ConfigController
         $this->url = strtr(mb_convert_encoding($this->url, 'ISO-8859-1', 'UTF-8'), mb_convert_encoding($this->format['a'], 'ISO-8859-1', 'UTF-8'), $this->format['b']);
     }
 
+    /**
+     * Converter o valor obtido da URL "sobre-empresa" e converter no formato da classe 
+     * "SobreEmpresa".
+     * Utilizado as funções para converter tudo para minúsculo, converter o traço pelo 
+     * espaço, converter cada letra da primeira palavra para maiúsculo, retirar os 
+     * espaços em branco
+     *
+     * @param string $slugController Nome da classe
+     * @return string Retorna a controller "sobre-empresa" convertido para o nome da 
+     * Classe "SobreEmpresa"
+     */
+
     private function slugController($slugController)
     {
         //Converter para minusculo
@@ -64,6 +98,13 @@ class ConfigController
         $this->urlSlugController = str_replace(" ", "", $this->urlSlugController);
         return $this->urlSlugController;
     }
+
+     /**
+     * Carregar as Controllers.
+     * Instanciar as classes da controller e carregar o método index.
+     *
+     * @return void
+     */
 
     public function loadPage()
     {
