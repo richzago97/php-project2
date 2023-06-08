@@ -24,6 +24,14 @@ abstract class Config
         define("CONTROLLER", "Home");
         define("CONTROLLERERRO", "Erro");
 
+        //Credenciais do banco de dados
+        define("HOST", "localhost");
+        define("USER", "root");
+        define("PASS", "");
+        define("DBNAME", "project2");
+        define("PORT", 3306);
+
+
         define("EMAILADM", "teste@teste.com");
     }
 }
