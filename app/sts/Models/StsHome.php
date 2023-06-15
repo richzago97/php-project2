@@ -14,15 +14,10 @@ class StsHome
 
     public function index():array
     {
-        $this->data = [
-            "title" => "Topo da pagina",
-            "description" => "Descrição do serviço"
-        ];
-
-        $connection = new \Sts\Models\helper\StsConn();
-        $this->connection = $connection->connectDb();
-
-        var_dump($this->connection);
+      
+        $viewHome = new \Sts\Models\helper\StsRead();
+        $viewHome->exeRead("sts_homes_tops");
+        $this->data = $viewHome->getResult();
 
         return $this->data;
     }
