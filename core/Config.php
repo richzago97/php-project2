@@ -32,6 +32,6 @@ abstract class Config
         define("PORT", 3306);
 
 
-        define("EMAILADM", "teste@teste.com");
+        define("EMAILADM", "adm@email.com");
     }
 }
